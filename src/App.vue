@@ -1,4 +1,56 @@
 <template>
+  <template v-if="currentPage == 0">
+  <div class="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <h1 class="text-2xl font-bold mb-6">Choose Your Role</h1>
+    <div class="flex flex-col space-y-4">
+      <button
+        class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+        @click="selectRole('host')"
+      >
+        Be a Host
+      </button>
+      <button
+        class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 text-xl"
+        @click="selectRole('guest')"
+      >
+        Be a Guest
+      </button>
+      <button
+        class="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 text-xl"
+        @click="selectRole('viewer')"
+      >
+        Be a Viewer
+      </button>
+    </div>
+
+    <div v-if="role === 'host'" class="mt-6 p-4 bg-white shadow rounded">
+      <h2 class="text-lg font-bold mb-4">Create Host Room</h2>
+      <div class="space-y-2">
+        <input
+          type="text"
+          v-model="username"
+          placeholder="Enter your name"
+          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+        <button
+          v-if="!roomNumber && !isLoading"
+          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+          @click="createHostRoom"
+        >
+          Generate Room Number
+        </button>
+      </div>
+      <p v-if="isLoading">Loading...</p>
+      <p v-if="roomNumber" class="mt-4 text-green-500 font-bold">
+        Room Created!<br>Room Number: {{ roomNumber }}
+      </p>
+      <p v-if="errorMessage" class="mt-4 text-red-500">
+        {{ errorMessage }}
+      </p>
+    </div>
+  </div>
+</template>
+
 
   <template v-if="currentPage == 1">
       <div class="tile-container">
@@ -36,7 +88,7 @@
                         </span>
                     </div>
     
-                    <span class="movie-title" v-if="tile.original_title"><small>{{ tile.release_date.slice(0, 4) }}. </small>{{ tile.original_title }}</span>
+                    <span class="movie-title" v-if="tile.original_title"><small>{{index+1}} ({{ tile.release_date.slice(0, 4) }}) </small>{{ tile.original_title }}</span>
                 </div>
             </div>
         </template>
@@ -70,7 +122,7 @@ export default {
         movie_data,
         moviesInternational,
         moviesJapan,
-      currentPage: null,
+      currentPage: 0,
       tiles: null,
       startX: 0,
       startY: 0,
@@ -87,84 +139,84 @@ export default {
       defaultTime: 4,
       timerInterval: null,
       hasGameFinished: false,
-        genres : [
-            {
-            "id": 28,
-            "name": "Action"
-            },
-            {
-            "id": 12,
-            "name": "Adventure"
-            },
-            {
-            "id": 16,
-            "name": "Animation"
-            },
-            {
-            "id": 35,
-            "name": "Comedy"
-            },
-            {
-            "id": 80,
-            "name": "Crime"
-            },
-            {
-            "id": 99,
-            "name": "Documentary"
-            },
-            {
-            "id": 18,
-            "name": "Drama"
-            },
-            {
-            "id": 10751,
-            "name": "Family"
-            },
-            {
-            "id": 14,
-            "name": "Fantasy"
-            },
-            {
-            "id": 36,
-            "name": "History"
-            },
-            {
-            "id": 27,
-            "name": "Horror"
-            },
-            {
-            "id": 10402,
-            "name": "Music"
-            },
-            {
-            "id": 9648,
-            "name": "Mystery"
-            },
-            {
-            "id": 10749,
-            "name": "Romance"
-            },
-            {
-            "id": 878,
-            "name": "SF"
-            },
-            {
-            "id": 10770,
-            "name": "TV Movie"
-            },
-            {
-            "id": 53,
-            "name": "Thriller"
-            },
-            {
-            "id": 10752,
-            "name": "War"
-            },
-            {
-            "id": 37,
-            "name": "Western"
-            }
-        ],
+      genres : [
+          {
+          "id": 28,
+          "name": "Action"
+          },
+          {
+          "id": 12,
+          "name": "Adventure"
+          },
+          {
+          "id": 16,
+          "name": "Animation"
+          },
+          {
+          "id": 35,
+          "name": "Comedy"
+          },
+          {
+          "id": 80,
+          "name": "Crime"
+          },
+          {
+          "id": 99,
+          "name": "Documentary"
+          },
+          {
+          "id": 18,
+          "name": "Drama"
+          },
+          {
+          "id": 10751,
+          "name": "Family"
+          },
+          {
+          "id": 14,
+          "name": "Fantasy"
+          },
+          {
+          "id": 36,
+          "name": "History"
+          },
+          {
+          "id": 27,
+          "name": "Horror"
+          },
+          {
+          "id": 10402,
+          "name": "Music"
+          },
+          {
+          "id": 9648,
+          "name": "Mystery"
+          },
+          {
+          "id": 10749,
+          "name": "Romance"
+          },
+          {
+          "id": 878,
+          "name": "SF"
+          },
+          {
+          "id": 10770,
+          "name": "TV Movie"
+          },
+          {
+          "id": 53,
+          "name": "Thriller"
+          },
+          {
+          "id": 10752,
+          "name": "War"
+          },
+          {
+          "id": 37,
+          "name": "Western"
+          }
+      ],
 
         uniqueId: null,
         currentUserRow: null,
@@ -175,6 +227,17 @@ export default {
         computedHref: null,
         
         hasPointsReached: null,
+
+        developingMode: true,
+        role: null,
+        username: "",
+        roomNumber: null,
+        errorMessage: "",
+        baseUrl: "https://script.google.com/macros/s/AKfycbxUVEJ9VEGl9YzqUygcd3dXHcl9NQD9pV0LW7VBnSqtu9oNkZZRfJeEmPNFE8D9fBgmHQ/exec",
+        isLoading: false,
+        existingRoomNumbers: [], 
+
+        maxMovieCount: 25,
   };
 },
 watch: {
@@ -197,7 +260,7 @@ methods: {
   async startGame(){  
     // await this.incrementSorting()
     this.hasGameFinished = false;
-    this.currentPage = 1
+    // this.currentPage = 1
     this.tiles = this.generateRandomTiles(15)
     this.currentTileIndex = 0
   },
@@ -208,6 +271,12 @@ methods: {
         }
         return array;
     },
+    removeAdultsAndShuffle(array) {
+    // Filter out items where .adult is true
+    const filteredArray = array.filter(item => !item.adult);
+    // Shuffle the filtered array
+    return this.shuffleArray(filteredArray);
+},
   generateRandomTiles() {
 
     let combinedArr = [...this.moviesJapan, ...this.moviesInternational];
@@ -217,7 +286,7 @@ methods: {
     
 
       // Generate random tiles
-      const tiles = this.shuffleArray(combinedArr)
+      const tiles = this.removeAdultsAndShuffle(combinedArr)
       console.log(tiles)
 
       return tiles;
@@ -302,7 +371,7 @@ methods: {
 
                 setTimeout(() => {
             document.body.style.backgroundColor = 'transparent';  // Reset the background color to the default (transparent or inherited)
-            document.body.style.backgroundImage = 'linear-gradient(to right, #141e30, #243b55)';  // Apply the gradient
+            document.body.style.backgroundImage = 'rgb(20, 30, 48)';  // Apply the gradient
         }, 300);  // Transition will occur smoothly
       }
 
@@ -329,8 +398,77 @@ methods: {
         }
       }
       const rotation = adjustedIndex * 5
-      return `scale(${1 - adjustedIndex * 0.05}) translateY(${-adjustedIndex * 8}px) rotate(${rotation}deg)`;
+      return `scale(${1 - adjustedIndex * 0.05}) translateY(${-adjustedIndex * 0}px) rotate(${rotation}deg)`;
   },
+
+  async loadRoomNumbers() {
+    console.log('loading rooms')
+    try {
+      const response = await fetch(
+        `${this.baseUrl}?action=getAllRooms`
+      );
+      const result = await response.json();
+
+      if (result.success && Array.isArray(result.rooms)) {
+        
+        this.existingRoomNumbers = result.rooms;
+        console.log('got the room data')
+        console.log(this.existingRoomNumbers)
+      } else {
+        this.errorMessage = "Failed to load room numbers.";
+      }
+    } catch (error) {
+      console.error(error);
+      this.errorMessage = "An error occurred while loading room numbers.";
+    }
+  },
+
+  selectRole(role) {
+      this.role = role;
+    },
+    async createHostRoom() {
+      if (!this.username) {
+        this.errorMessage = "Please enter a username!";
+        return;
+      }
+
+      this.errorMessage = "";
+      this.roomNumber = null;
+
+      let randomNumber;
+      do {
+        // Generate a random room number between 10000 and 99999
+        randomNumber = Math.floor(Math.random() * 90000) + 10000;
+      } while (this.existingRoomNumbers.includes(randomNumber.toString()));
+
+      // Add room number and username to the sheet
+      const success = await this.addRoomToSheet(randomNumber, this.username);
+      if (success) {
+        this.roomNumber = randomNumber;
+        this.currentPage = 1
+      }
+    },
+    async addRoomToSheet(roomNumber, username) {
+      try {
+        const response = await fetch(
+          `${this.baseUrl}?action=addRoom&roomId=${roomNumber}&hostName=${username}`
+        );
+        const result = await response.json();
+        if (result.success) {
+          // Update local list of room numbers
+          this.existingRoomNumbers.push(roomNumber.toString());
+          return true;
+        } else {
+          this.errorMessage = "Failed to create room. Please try again.";
+          return false;
+        }
+      } catch (error) {
+        console.error(error);
+        this.errorMessage = "An error occurred while creating the room.";
+        return false;
+      }
+    },
+
 },
   
   async mounted() {
@@ -339,6 +477,14 @@ methods: {
       // this.getParams();
       // if(this.uniqueId) await this.findMe()
       // this.currentPage = 1
+      if(this.developingMode){
+        this.roomNumber = 76113
+        this.username = 'Coffee'
+        this.currentPage = 1
+      }else{
+        this.loadRoomNumbers();
+      }
+
       this.startGame()
   },
 };
@@ -357,7 +503,7 @@ methods: {
       overflow: hidden !important;
       
       font-size: unset;
-      background: linear-gradient(to right, #141e30, #243b55); 
+      background: rgb(20, 30, 48);
   }
 
   #app {
