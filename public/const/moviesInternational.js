@@ -12067,25 +12067,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/30TgnSvXiL7NQoQ5WWwHqw0FRhA.jpg",
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 48650,
-    "original_language": "es",
-    "original_title": "Habitación en Roma",
-    "overview": "A hotel room in the center of Rome serves as the setting for Alba and Natasha, two sexy and recently acquainted women, to have a physical adventure that touches their very souls.",
-    "popularity": 73.398,
-    "poster_path": "/w90ItYf9qagQKVEBr1uFxPomAtf.jpg",
-    "release_date": "2010-05-07",
-    "title": "Room in Rome",
-    "video": false,
-    "vote_average": 6.4,
-    "vote_count": 735
-  },
-  {
-    "adult": false,
     "backdrop_path": "/o0x4LOW8qzVNyqwWGMuFa3kE7Hs.jpg",
     "genre_ids": [
       80,

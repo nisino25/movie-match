@@ -33,7 +33,7 @@
           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
         <button
-          v-if="!roomNumber && !isLoading"
+          v-if="!isLoading"
           class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
           @click="createHostRoom"
         >
@@ -41,9 +41,6 @@
         </button>
       </div>
       <p v-if="isLoading">Loading...</p>
-      <p v-if="roomNumber" class="mt-4 text-green-500 font-bold">
-        Room Created!<br>Room Number: {{ roomNumber }}
-      </p>
       <p v-if="errorMessage" class="mt-4 text-red-500">
         {{ errorMessage }}
       </p>
@@ -295,7 +292,7 @@ export default {
         isLoading: false,
         existingRoomNumbers: [], 
 
-        maxMovieCount: 20,
+        maxMovieCount: 25,
         hostMoviesList: [],
 
         hostName: null,
@@ -691,7 +688,8 @@ methods: {
       // Step 2: Check if the "roomNumber" parameter exists
       if (urlParams.has("roomNumber")) {
           // Step 3: Set the roomNumber and role
-          this.roomNumber = urlParams.get("roomNumber");
+          this.roomNumber = Number(urlParams.get("roomNumber"));
+          console.log(typeof this.roomNumber)
           this.role = "guest";
           console.log(`Room Number: ${this.roomNumber}, Role: ${this.role}`);
       } else {
