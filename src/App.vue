@@ -89,7 +89,7 @@
       </div>
 
       <!-- Picked Movies Section -->
-      <div class="text-center" v-if="role == 'host'">
+      <div class="text-center" v-if="role == 'host'" >
         <span class="text-lg font-semibold">
           <span class="text-green-400">{{hostMoviesList.length}}</span> / <span>{{ maxMovieCount }}</span>
         </span>
@@ -104,7 +104,7 @@
 
       <!-- Room Number Section -->
       <div class="flex items-center text-center">
-        <span class="text-lg font-semibold bg-blue-500 px-3 py-1 rounded">
+        <span class="text-lg font-semibold bg-blue-500 px-3 py-1 rounded" @click="getSharedLink()">
           #{{ roomNumber || "00000" }}
           <small v-if="hostName"><br>{{ hostName }}</small>
         </span>
@@ -326,19 +326,6 @@ methods: {
     this.tiles = this.generateRandomTiles(15)
     this.currentTileIndex = 0
   },
-  shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-        }
-        return array;
-    },
-  removeAdultsAndShuffle(array) {
-    // Filter out items where .adult is true
-    const filteredArray = array.filter(item => !item.adult);
-    // Shuffle the filtered array
-    return this.shuffleArray(filteredArray);
-},
   generateRandomTiles() {
 
     let combinedArr = [...this.moviesJapan, ...this.moviesInternational];
@@ -348,10 +335,19 @@ methods: {
     
 
       // Generate random tiles
-      const tiles = this.removeAdultsAndShuffle(combinedArr)
-      console.log(tiles)
+      const tiles = this.shuffleArray(combinedArr);
+
+      console.log(tiles);
 
       return tiles;
+  },
+  shuffleArray(array) {
+    
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
   },
   findGenreById(id) {
     return this.genres.find(genre => genre.id === id);
@@ -386,10 +382,11 @@ methods: {
       
       // const threshold = 100;
       const minMove = 50;
+      const minYmove = 150;
       // const currentCategory = this.tiles[this.currentTileIndex].category;
       // let success = false;
 
-      if (Math.abs(this.moveY) > minMove) return this.failSwipe()
+      if (Math.abs(this.moveY) > minYmove) return this.failSwipe(Math.abs(this.moveY))
 
       if (Math.abs(this.moveX) > minMove) {
         // success = true
@@ -436,7 +433,8 @@ methods: {
       this.moveX = 0;
       this.moveY = 0;
   },
-  failSwipe(){
+  failSwipe(num){
+    console.log(num)
     this.isSwiping = false;
     this.moveX = 0;
     this.moveY = 0;
@@ -648,6 +646,11 @@ methods: {
     // const matchingId = this.guestMovieList[0]
 
     if (matchingId) {
+        // Remove the matching ID from hostMoviesList
+        const index = this.hostMoviesList.indexOf(matchingId);
+        if (index !== -1) {
+            this.hostMoviesList.splice(index, 1); // Remove 1 item at the found index
+        }
         // Combine movies from both arrays
         const combinedArr = [...this.moviesJapan, ...this.moviesInternational];
 
@@ -663,6 +666,41 @@ methods: {
 
   },
 
+  getSharedLink() {
+      // Step 1: Get the current domain
+      const currentDomain = window.location.origin;
+
+      // Step 2: Generate the shareable link
+      const shareableLink = `${currentDomain}?roomNumber=${this.roomNumber}`;
+      console.log(shareableLink)
+
+      // Step 3: Copy the link to the clipboard
+      navigator.clipboard.writeText(shareableLink)
+          .then(() => {
+              alert("Link copied to clipboard!");
+          })
+          .catch((error) => {
+              console.error("Failed to copy link:", error);
+              alert("Failed to copy the link. Please try again.");
+          });
+  },
+  checkLink() {
+      // Step 1: Get the current URL search parameters
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Step 2: Check if the "roomNumber" parameter exists
+      if (urlParams.has("roomNumber")) {
+          // Step 3: Set the roomNumber and role
+          this.roomNumber = urlParams.get("roomNumber");
+          this.role = "guest";
+          console.log(`Room Number: ${this.roomNumber}, Role: ${this.role}`);
+      } else {
+          console.log("No room number found in the URL.");
+      }
+  }
+
+
+
 
 
 
@@ -670,20 +708,22 @@ methods: {
   
   async mounted() {
     console.clear()
+    
     // console.log(this.movie_data)
-      // this.getParams();
-      // if(this.uniqueId) await this.findMe()
-      // this.currentPage = 1
-      this.loadRoomNumbers();
-      if(this.developingMode){
-        // this.role = 'guest';
-        // this.role = 'host';
-        // this.roomNumber = 76113;
-        // this.username = 'sunshine';
-        // this.currentPage = 1;
-      }
+    // this.getParams();
+    // if(this.uniqueId) await this.findMe()
+    // this.currentPage = 1
+    this.loadRoomNumbers();
+    this.checkLink()
+    if(this.developingMode){
+      // this.role = 'guest';
+      // this.role = 'host';
+      // this.roomNumber = 76113;
+      // this.username = 'sunshine';
+      // this.currentPage = 1;
+    }
 
-      this.startGame()
+    this.startGame()
   },
 };
 </script>
