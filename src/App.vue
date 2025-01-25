@@ -48,11 +48,69 @@
         {{ errorMessage }}
       </p>
     </div>
+    <div v-if="role === 'guest'" class="mt-6 p-4 bg-white shadow rounded">
+      <h2 class="text-lg font-bold mb-4">Enter Room number</h2>
+      <div class="space-y-2">
+        <input
+          type="text"
+          v-model="username"
+          placeholder="Enter your name"
+          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+        <input
+          type="number"
+          v-model="roomNumber"
+          placeholder="Enter room number"
+          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+        <button
+          v-if="!isLoading"
+          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+          @click="joinRoom"
+        >
+          Join Room
+        </button>
+      </div>
+      <p v-if="isLoading">Loading...</p>
+      <p v-if="errorMessage" class="mt-4 text-red-500">
+        {{ errorMessage }}
+      </p>
+    </div>
   </div>
 </template>
 
 
   <template v-if="currentPage == 1">
+    <div class="absolute top-0 left-0 w-full flex items-center justify-between bg-gray-800 text-white p-4 z-50">
+      <!-- Profile Section -->
+      <div class="flex items-center">
+        <div class="w-10 h-10 bg-gray-500 rounded-full flex-shrink-0"></div>
+        <span class="ml-2 text-lg font-semibold">{{username}}</span>
+      </div>
+
+      <!-- Picked Movies Section -->
+      <div class="text-center" v-if="role == 'host'">
+        <span class="text-lg font-semibold">
+          <span class="text-green-400">{{hostMoviesList.length}}</span> / <span>{{ maxMovieCount }}</span>
+        </span>
+      </div>
+
+      <!-- Picked Movies Section -->
+      <div class="text-center" v-if="role == 'guest'">
+        <span class="text-lg font-semibold">
+          <span class="text-green-400">{{guestMovieList.length}}</span> / <span>{{ hostMoviesList.length }} from Host</span>
+        </span>
+      </div>
+
+      <!-- Room Number Section -->
+      <div class="flex items-center text-center">
+        <span class="text-lg font-semibold bg-blue-500 px-3 py-1 rounded">
+          #{{ roomNumber || "00000" }}
+          <small v-if="hostName"><br>{{ hostName }}</small>
+        </span>
+      </div>
+    </div>
+
       <div class="tile-container">
         <template v-for="(tile, index) in tiles" :key="tile.id">
             <div 
@@ -233,11 +291,15 @@ export default {
         username: "",
         roomNumber: null,
         errorMessage: "",
-        baseUrl: "https://script.google.com/macros/s/AKfycbxUVEJ9VEGl9YzqUygcd3dXHcl9NQD9pV0LW7VBnSqtu9oNkZZRfJeEmPNFE8D9fBgmHQ/exec",
+        baseUrl: "https://script.google.com/macros/s/AKfycbx9uUjKDxpopuCig5ukgaV36EKgZU2yYW6VuNY3QJNMT0S0Y72VLuYbrNTXuizOcAVprQ/exec",
         isLoading: false,
         existingRoomNumbers: [], 
 
-        maxMovieCount: 25,
+        maxMovieCount: 20,
+        hostMoviesList: [],
+
+        hostName: null,
+        guestMovieList: [],
   };
 },
 watch: {
@@ -271,7 +333,7 @@ methods: {
         }
         return array;
     },
-    removeAdultsAndShuffle(array) {
+  removeAdultsAndShuffle(array) {
     // Filter out items where .adult is true
     const filteredArray = array.filter(item => !item.adult);
     // Shuffle the filtered array
@@ -294,14 +356,6 @@ methods: {
   findGenreById(id) {
     return this.genres.find(genre => genre.id === id);
 },
-//   getFlyAwayDirection(category) {
-//       switch (category) {
-//           case 'burnable': return { x: 170, y: 50, rotate: 45, };
-//           case 'plastic': return { x: -60, y: 60, rotate: -45, };
-//           case 'bottle': return { x: 75, y: 210, rotate: 45, };
-//           case 'recycle': return { x: 60, y: -100, rotate: 45, };
-//       }
-//   },
   startSwipe(event) {
       if (event.type.startsWith('mouse') && event.button !== 0) return;
       this.isSwiping = true;
@@ -341,6 +395,9 @@ methods: {
         // success = true
         this.flyAwayTile = this.tiles[this.currentTileIndex];
         if(this.moveX > minMove){
+            if(this.role == 'host') this.addMovie()
+            if(this.role == 'guest') this.compareList()
+            console.log(this.flyAwayTile)
             document.body.style.backgroundColor = 'forestGreen';  // Change background color to forest green
             document.body.style.backgroundImage = 'none'; // Remove gradient image
             if(this.flyAwayTile) this.flyAwayTile.isPicked = true;
@@ -424,50 +481,190 @@ methods: {
   },
 
   selectRole(role) {
-      this.role = role;
-    },
-    async createHostRoom() {
+    this.role = role;
+  },
+  async createHostRoom() {
+    
+
       if (!this.username) {
-        this.errorMessage = "Please enter a username!";
-        return;
+          this.errorMessage = "Please enter a username!";
+          return;
       }
+
+      this.isLoading = true
 
       this.errorMessage = "";
       this.roomNumber = null;
 
-      let randomNumber;
-      do {
-        // Generate a random room number between 10000 and 99999
-        randomNumber = Math.floor(Math.random() * 90000) + 10000;
-      } while (this.existingRoomNumbers.includes(randomNumber.toString()));
+      // Generate a list of all possible room numbers (10000 to 99999)
+      const allRoomNumbers = Array.from({ length: 90000 }, (_, i) => (i + 10000).toString());
+
+      // Filter out the ones that already exist
+      const availableRoomNumbers = allRoomNumbers.filter(
+          (roomNumber) => !this.existingRoomNumbers.includes(roomNumber)
+      );
+
+      // Check if there are any available room numbers
+      if (availableRoomNumbers.length === 0) {
+          this.errorMessage = "No available room numbers. Please try again later.";
+          return;
+      }
+
+      // Randomly select one from the available room numbers
+      const randomIndex = Math.floor(Math.random() * availableRoomNumbers.length);
+      const selectedRoomNumber = availableRoomNumbers[randomIndex];
 
       // Add room number and username to the sheet
-      const success = await this.addRoomToSheet(randomNumber, this.username);
+      const success = await this.addRoomToSheet(selectedRoomNumber, this.username);
       if (success) {
-        this.roomNumber = randomNumber;
-        this.currentPage = 1
+          this.roomNumber = selectedRoomNumber;
+          this.currentPage = 1;
+          this.isLoading = false
       }
-    },
-    async addRoomToSheet(roomNumber, username) {
-      try {
-        const response = await fetch(
-          `${this.baseUrl}?action=addRoom&roomId=${roomNumber}&hostName=${username}`
-        );
-        const result = await response.json();
-        if (result.success) {
-          // Update local list of room numbers
-          this.existingRoomNumbers.push(roomNumber.toString());
-          return true;
-        } else {
-          this.errorMessage = "Failed to create room. Please try again.";
-          return false;
-        }
-      } catch (error) {
-        console.error(error);
-        this.errorMessage = "An error occurred while creating the room.";
+  },
+  async addRoomToSheet(roomNumber, username) {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}?action=addRoom&roomId=${roomNumber}&hostName=${username}`
+      );
+      const result = await response.json();
+      if (result.success) {
+        // Update local list of room numbers
+        this.existingRoomNumbers.push(roomNumber.toString());
+        return true;
+      } else {
+        this.errorMessage = "Failed to create room. Please try again.";
         return false;
       }
-    },
+    } catch (error) {
+      console.error(error);
+      this.errorMessage = "An error occurred while creating the room.";
+      return false;
+    }
+  },
+  addMovie(){
+    this.hostMoviesList.push(this.flyAwayTile.id)
+    if (this.hostMoviesList.length % 5 === 0 || this.hostMoviesList.length === this.maxMovieCount) {
+        this.sendMoviesToSpreadsheet();
+    }
+  },
+  async sendMoviesToSpreadsheet() {
+    try {
+        // Send the hostMoviesList as a JSON string
+        if(this.hostMoviesList.length == this.maxMovieCount) alert('Done!')
+        const moviesJSON = JSON.stringify(this.hostMoviesList);
+
+        // Make a request to the Google Apps Script to update the spreadsheet
+        const response = await fetch(
+            `${this.baseUrl}?action=updateMovies&roomNumber=${this.roomNumber}&movies=${encodeURIComponent(moviesJSON)}`
+        );
+        
+        
+
+        const result = await response.json();
+        if (result.success) {
+            console.log("Movies successfully sent to the spreadsheet!");
+        } else {
+            console.error("Failed to send movies to the spreadsheet:", result.message);
+        }
+    } catch (error) {
+        console.error("An error occurred while sending movies to the spreadsheet:", error);
+    }
+  },
+
+  async joinRoom() {
+    
+
+    if (!this.username) {
+        this.errorMessage = "Please enter a username!";
+        return;
+    }
+
+    if (!this.roomNumber) {
+        this.errorMessage = "Please enter a roomnumber!";
+        return;
+    }
+
+    this.isLoading = true
+    this.errorMessage = "";
+
+    try {
+        // Check if the room exists and is not occupied
+        const room = this.existingRoomNumbers.find(
+            (room) => room.roomId === this.roomNumber
+        );
+
+        if (!room) {
+            this.errorMessage = "Room does not exist. Please check the room number.";
+            this.isLoading = false;
+            return;
+        }
+
+        if (!room.isColEEmpty) {
+            this.errorMessage = "The room is already occupied. Please try another room.";
+            this.isLoading = false;
+            return;
+        }
+
+        // Join the room by marking it as occupied locally and updating the sheet
+        const success = await this.addUserToRoom(this.roomNumber, this.username);
+        if (success) {
+            room.isColEEmpty = false; // Mark room as occupied locally
+            this.currentPage = 1; // Navigate to the next page
+            this.hostName = room.hostName
+            this.hostMoviesList = room.hostMoviesList ? JSON.parse(room.hostMoviesList) : []; 
+            console.log(this.hostMoviesList)
+            this.hostAvatar = room.hostAvatar
+            
+        
+        } else {
+            this.errorMessage = "Failed to join the room. Please try again.";
+        }
+    } catch (error) {
+        console.error(error);
+        this.errorMessage = "An error occurred while joining the room.";
+    } finally {
+        this.isLoading = false;
+    }
+  },
+  async addUserToRoom(roomNumber, username) {
+      try {
+          const response = await fetch(
+              `${this.baseUrl}?action=addUserToRoom&roomId=${roomNumber}&guestName=${username}`
+          );
+          const result = await response.json();
+          return result.success;
+      } catch (error) {
+          console.error(error);
+          this.errorMessage = "An error occurred while adding the user to the room.";
+          return false;
+      }
+  },
+  compareList(){
+    this.guestMovieList.push(this.flyAwayTile.id)
+
+    // Check for matches between guestMovieList and hostMoviesList
+    const matchingId = this.hostMoviesList.find((id) => this.guestMovieList.includes(id));
+    // const matchingId = this.guestMovieList[0]
+
+    if (matchingId) {
+        // Combine movies from both arrays
+        const combinedArr = [...this.moviesJapan, ...this.moviesInternational];
+
+        // Find the movie by ID in the combined array
+        const matchingMovie = combinedArr.find((movie) => movie.id === matchingId);
+
+        if (matchingMovie) {
+            // Alert the movie title
+            alert(`Match found! Movie: ${matchingMovie.title}`);
+        }
+    }
+
+
+  },
+
+
+
 
 },
   
@@ -477,12 +674,13 @@ methods: {
       // this.getParams();
       // if(this.uniqueId) await this.findMe()
       // this.currentPage = 1
+      this.loadRoomNumbers();
       if(this.developingMode){
-        this.roomNumber = 76113
-        this.username = 'Coffee'
-        this.currentPage = 1
-      }else{
-        this.loadRoomNumbers();
+        // this.role = 'guest';
+        // this.role = 'host';
+        // this.roomNumber = 76113;
+        // this.username = 'sunshine';
+        // this.currentPage = 1;
       }
 
       this.startGame()
