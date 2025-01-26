@@ -428,25 +428,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/41W6qn29QscXcjbSRsC1DfWUURR.jpg",
-    "genre_ids": [
-      80,
-      18
-    ],
-    "id": 393738,
-    "original_language": "el",
-    "original_title": "Ερωτικό Πάθος",
-    "overview": "Since her parents' death, 19-year old Della lives with her aunt Marsha and Andrew, her old husband. One morning Marsha has sex with Alex, her husband's doctor. Right afterwords, Della seduces him at the beach while Marsha watches them from her window. The two women have a fight which results to Della leaving the house. She finds refuge at Maria's (a friend of hers) place but as it appears she is missing and the house is inhabited by Aris and Samantha. Della makes a pass at Aris, managing to infuriate Samantha. In the meanwhile, the local authorities are investigating the murder of Aris' business partner, Steve Brynner. When all trace leads to Aris, Della suggests a swap: She'll travel to Italy to get fake passports for the couple as long as they accept to murder Marsha.",
-    "popularity": 41.051,
-    "poster_path": "/9Py9VvA9MBCgJWH4kOBvDRsdkW5.jpg",
-    "release_date": "1981-03-26",
-    "title": "Erotic Passion",
-    "video": false,
-    "vote_average": 5.292,
-    "vote_count": 12
-  },
-  {
-    "adult": false,
     "backdrop_path": "/lNmIAX1IuPIEPMHhLBEm4wmhYX0.jpg",
     "genre_ids": [
       12,
@@ -950,24 +931,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/lOOEU6yxnTq6UFgkAOgeW9i3DuR.jpg",
-    "genre_ids": [
-      18
-    ],
-    "id": 580116,
-    "original_language": "ja",
-    "original_title": "ザ・レイプ",
-    "overview": "Yahagi Michiko is accosted and raped walking home one evening. From there she maneuvers the logistics of the police, hospital, and criminal justice system while balancing her home life including romantic relationships.",
-    "popularity": 26.628,
-    "poster_path": "/kY6gWfEJMjJ0JSvDkBuOCB3U6v0.jpg",
-    "release_date": "1982-05-15",
-    "title": "The Rape",
-    "video": false,
-    "vote_average": 4,
-    "vote_count": 6
-  },
-  {
-    "adult": false,
     "backdrop_path": "/qgsi0qFH4UYc2BqBYBGum2ne0GK.jpg",
     "genre_ids": [
       878,
@@ -1181,25 +1144,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/9UoAp9XEfa9u9mKNUeS2tRRYVEZ.jpg",
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 28468,
-    "original_language": "it",
-    "original_title": "La chiave",
-    "overview": "Art professor Nino Rolfe attempts to break down his wife Teresa's conventional modesty. Noticing her affection for their daughter's fiancé, Nino instigates her sexual interest in him - setting off a chain of unexpected events and emotional complications...",
-    "popularity": 58.591,
-    "poster_path": "/e6g2geNLgFzMbriH6EvSJZD78nx.jpg",
-    "release_date": "1983-10-19",
-    "title": "The Key",
-    "video": false,
-    "vote_average": 6,
-    "vote_count": 399
-  },
-  {
-    "adult": false,
     "backdrop_path": "/2pViauhiZLhAUb1lsY6wRir69SF.jpg",
     "genre_ids": [
       35
@@ -1276,24 +1220,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/4hPKEU0DfkPSGgDRg0mBje5BfJ0.jpg",
-    "genre_ids": [
-      18
-    ],
-    "id": 185708,
-    "original_language": "ja",
-    "original_title": "団鬼六　美女縄化粧",
-    "overview": "A wealthy college girl is snatched off the streets by a pair of S&M professionals. They methodically break her will with the extensive use of bondage and erotic devices. But who has hired them and for what perverse reason?",
-    "popularity": 22.835,
-    "poster_path": "/tazpx4OGUtTxTbNnRfFLXbwyLIl.jpg",
-    "release_date": "1983-12-02",
-    "title": "Beauty Rope Cosmetology",
-    "video": false,
-    "vote_average": 5,
-    "vote_count": 3
-  },
-  {
-    "adult": false,
     "backdrop_path": "/aqvospM52NFtgFkrIbzk5nSy7Sh.jpg",
     "genre_ids": [
       12,
@@ -1333,25 +1259,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/r1DdG5leG4ECOlVZAw62et5Qs9Z.jpg",
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 348950,
-    "original_language": "ja",
-    "original_title": "セーラー服 百合族",
-    "overview": "Two high school girls discover the pleasure of sex with each other until one of them chooses to be with a boy.",
-    "popularity": 25.895,
-    "poster_path": "/3fZvTapKlRvADikgsDxCyBodr6M.jpg",
-    "release_date": "1983-06-24",
-    "title": "Sailor Uniform: Lily Lovers",
-    "video": false,
-    "vote_average": 5.8,
-    "vote_count": 11
-  },
-  {
-    "adult": false,
     "backdrop_path": "/fi8Z4iAbc8uSlXd9xjQqXx4V4FF.jpg",
     "genre_ids": [
       10751,
@@ -1388,25 +1295,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 7.1,
     "vote_count": 1903
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/k6BDdDhWeTlj0LVUL5eADZtR0cz.jpg",
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 535,
-    "original_language": "en",
-    "original_title": "Flashdance",
-    "overview": "Alex Owens, a young woman juggling between two odd jobs, aspires to become a successful ballet dancer. Nick, who is her boss and lover, supports and encourages her to fulfil her dream.",
-    "popularity": 20.922,
-    "poster_path": "/ziiy6ORt8BlxWFXskBChBMInvDA.jpg",
-    "release_date": "1983-04-14",
-    "title": "Flashdance",
-    "video": false,
-    "vote_average": 6.494,
-    "vote_count": 1475
   },
   {
     "adult": false,
@@ -1583,25 +1471,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 6.2,
     "vote_count": 3076
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/pKaS8OTLlDJPJh5jZdm8wmFSPYS.jpg",
-    "genre_ids": [
-      18,
-      27
-    ],
-    "id": 185664,
-    "original_language": "ja",
-    "original_title": "団鬼六　修道女縄地獄",
-    "overview": "A woman gets caught by the wife of her lover which results in a stabbing. Feeling guilty she runs away and joins a nunnery. But she soon discovers that several nuns and a well known author have turned the place into their own personal S&M playground.",
-    "popularity": 49.117,
-    "poster_path": "/2jqTCgA6A85RZwycVwwgEuYardv.jpg",
-    "release_date": "1984-05-25",
-    "title": "Nun in Rope Hell",
-    "video": false,
-    "vote_average": 5.4,
-    "vote_count": 17
   },
   {
     "adult": false,
@@ -2113,26 +1982,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/8UYwlsXqzGDVJOhv63OizOLaiEz.jpg",
-    "genre_ids": [
-      18,
-      53,
-      27
-    ],
-    "id": 80788,
-    "original_language": "ja",
-    "original_title": "団鬼六 美教師地獄責め",
-    "overview": "A female teacher who is skilled in kendo is assigned to a rural high school in a beautiful remote valley. But she is soon trapped in a wide conspiracy of lust and perversion by those around her.",
-    "popularity": 48.772,
-    "poster_path": "/lphE85vShoj6TeRuoSvuFhcqYdr.jpg",
-    "release_date": "1985-12-14",
-    "title": "Beautiful Teacher in Torture Hell",
-    "video": false,
-    "vote_average": 5.577,
-    "vote_count": 26
-  },
-  {
-    "adult": false,
     "backdrop_path": "/5yEbLzaXe24cpFjfom7ntBY3rfB.jpg",
     "genre_ids": [
       18,
@@ -2363,26 +2212,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 7.949,
     "vote_count": 9877
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/12UiL2rS5M80AhS9uiZ633iy4pB.jpg",
-    "genre_ids": [
-      9648,
-      53,
-      80
-    ],
-    "id": 793,
-    "original_language": "en",
-    "original_title": "Blue Velvet",
-    "overview": "The discovery of a severed human ear found in a field leads a young man on an investigation related to a beautiful, mysterious nightclub singer and a group of psychopathic criminals who have kidnapped her child.",
-    "popularity": 63.857,
-    "poster_path": "/7hlgzJXLgyECS1mk3LSN3E72l5N.jpg",
-    "release_date": "1986-09-19",
-    "title": "Blue Velvet",
-    "video": false,
-    "vote_average": 7.6,
-    "vote_count": 3341
   },
   {
     "adult": false,
@@ -4595,41 +4424,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": "/spJ063LkpTk2BMiYx4L1dOGZnBv.jpg",
-    "genre_ids": [
-      10749,
-      18
-    ],
-    "id": 298094,
-    "original_language": "cn",
-    "original_title": "我為卿狂",
-    "overview": "David is sitting in a bar, musing over why he has bedded and left five or six of Asia's loveliest women in such a short time.",
-    "popularity": 21.848,
-    "poster_path": "/39cD7X07Nrt3wsEqcYP1n9BhjX2.jpg",
-    "release_date": "1991-11-15",
-    "title": "Hidden Desire",
-    "video": false,
-    "vote_average": 5.059,
-    "vote_count": 17
-  },
-  {
-    "adult": false,
-    "backdrop_path": null,
-    "genre_ids": [],
-    "id": 800378,
-    "original_language": "ja",
-    "original_title": "痴漢電車 ＯＬ感度くらべ",
-    "overview": "",
-    "popularity": 37.694,
-    "poster_path": "/gkKhowzgw3vAXEdtDjh9VDfAz4s.jpg",
-    "release_date": "1991-06-21",
-    "title": "Chikan Densha: OL Kando Kurabe",
-    "video": false,
-    "vote_average": 5.1,
-    "vote_count": 8
-  },
-  {
-    "adult": false,
     "backdrop_path": "/kTKWxTiLraTxgoszCzJ8gyuPjyw.jpg",
     "genre_ids": [
       28,
@@ -6268,24 +6062,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 6.893,
     "vote_count": 3915
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/wTDrA8k7ufi2AX1M5WcUq8WUPXl.jpg",
-    "genre_ids": [
-      27
-    ],
-    "id": 839493,
-    "original_language": "ja",
-    "original_title": "スキャンドール",
-    "overview": "Katsumi, a man who lives a lazy and uninspired life, suddenly becomes addicted to \"peeping\" to uncover the true identity of his unknown neighbors in the same apartment building, i.e. their abnormal daily lives. In the midst of this, a mysterious high school girl named Mika suddenly jumps into Katsumi's eye. In order to find out what's going on with Mika, who regularly comes to the room of a middle-aged man with no luck, Katsumi uses his high-tech skills to peep into the girl's life, but he soon becomes obsessed with the girl's mysterious charms. What is Mika's true face that he finally sees?",
-    "popularity": 56.882,
-    "poster_path": "/v1Ku73A8Myoy3JjSYwY8klhMLTd.jpg",
-    "release_date": "1996-07-12",
-    "title": "Scan Doll",
-    "video": false,
-    "vote_average": 0,
-    "vote_count": 0
   },
   {
     "adult": false,
@@ -11576,25 +11352,6 @@ export const moviesInternational = [
   },
   {
     "adult": false,
-    "backdrop_path": null,
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 247136,
-    "original_language": "ja",
-    "original_title": "M家の新妻 変態洗礼",
-    "overview": "Mikage will get married to Youiti next year, she agrees to live with Youiti's parents. One day, Youiti's father disrobed Mikage's Kimono and raped her. To her astonishment, her fiancé Youiti whom Mikage considers true love has an affair with his young stepmother. Shocked and devastated, what will Mikage do?",
-    "popularity": 86.12,
-    "poster_path": "/2oVfD5rUV2EElbQ11ds2Vf5nRaZ.jpg",
-    "release_date": "2009-03-27",
-    "title": "The Temptation of Kimono",
-    "video": false,
-    "vote_average": 5.8,
-    "vote_count": 18
-  },
-  {
-    "adult": false,
     "backdrop_path": "/hg0MTIFs49ef179C9Y1HRtzqbbK.jpg",
     "genre_ids": [
       18,
@@ -12203,25 +11960,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 6.27,
     "vote_count": 4159
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/wcUohmHc9oDZXarXDp905TYVui4.jpg",
-    "genre_ids": [
-      18,
-      10749
-    ],
-    "id": 82023,
-    "original_language": "de",
-    "original_title": "Hotel Desire",
-    "overview": "Antonia is a single mother who works as a hotel maid in Berlin. A normal hot summer day takes a dramatic turn when she crosses paths with a particular guest of the hotel, famous blind portrait painter Julius Pass.",
-    "popularity": 193.206,
-    "poster_path": "/myzQj8Rk178DrWsiZjVKjz7Kj9P.jpg",
-    "release_date": "2011-12-07",
-    "title": "Hotel Desire",
-    "video": false,
-    "vote_average": 6,
-    "vote_count": 115
   },
   {
     "adult": false,
@@ -16183,25 +15921,6 @@ export const moviesInternational = [
     "video": false,
     "vote_average": 7.2,
     "vote_count": 6
-  },
-  {
-    "adult": false,
-    "backdrop_path": "/vAAekmyeB9DpRKeJRZNbmIxoNKx.jpg",
-    "genre_ids": [
-      10749,
-      18
-    ],
-    "id": 1055110,
-    "original_language": "ja",
-    "original_title": "扉を閉めた女教師",
-    "overview": "A sensual suspense that tells the story of a female teacher and a young student locked in a closed room in the middle of summer.",
-    "popularity": 237.377,
-    "poster_path": "/t0R81rsu2chPZEpKiHi8zbOOwR3.jpg",
-    "release_date": "2021-10-03",
-    "title": "Female Teacher Closing the Door",
-    "video": false,
-    "vote_average": 8.5,
-    "vote_count": 2
   },
   {
     "adult": false,

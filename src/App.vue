@@ -1,81 +1,81 @@
 <template>
+
   <template v-if="currentPage == 0">
-  <div class="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-    <h1 class="text-2xl font-bold mb-6">Choose Your Role</h1>
-    <div class="flex flex-col space-y-4">
-      <button
-        class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-        @click="selectRole('host')"
-      >
-        Be a Host
-      </button>
-      <button
-        class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 text-xl"
-        @click="selectRole('guest')"
-      >
-        Be a Guest
-      </button>
-      <button
-        class="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 text-xl"
-        @click="selectRole('viewer')"
-      >
-        Be a Viewer
-      </button>
-    </div>
-
-    <div v-if="role === 'host'" class="mt-6 p-4 bg-white shadow rounded">
-      <h2 class="text-lg font-bold mb-4">Create Host Room</h2>
-      <div class="space-y-2">
-        <input
-          type="text"
-          v-model="username"
-          placeholder="Enter your name"
-          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
+    <div class="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <h1 class="text-2xl font-bold mb-6">Choose Your Role</h1>
+      <div class="flex flex-col space-y-4">
         <button
-          v-if="!isLoading"
           class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-          @click="createHostRoom"
+          @click="selectRole('host')"
         >
-          Generate Room Number
+          Be a Host
+        </button>
+        <button
+          class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 text-xl"
+          @click="selectRole('guest')"
+        >
+          Be a Guest
+        </button>
+        <button
+          class="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 text-xl"
+          @click="selectRole('viewer')"
+        >
+          Be a Viewer
         </button>
       </div>
-      <p v-if="isLoading">Loading...</p>
-      <p v-if="errorMessage" class="mt-4 text-red-500">
-        {{ errorMessage }}
-      </p>
-    </div>
-    <div v-if="role === 'guest'" class="mt-6 p-4 bg-white shadow rounded">
-      <h2 class="text-lg font-bold mb-4">Enter Room number</h2>
-      <div class="space-y-2">
-        <input
-          type="text"
-          v-model="username"
-          placeholder="Enter your name"
-          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-        <input
-          type="number"
-          v-model="roomNumber"
-          placeholder="Enter room number"
-          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-        <button
-          v-if="!isLoading"
-          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-          @click="joinRoom"
-        >
-          Join Room
-        </button>
-      </div>
-      <p v-if="isLoading">Loading...</p>
-      <p v-if="errorMessage" class="mt-4 text-red-500">
-        {{ errorMessage }}
-      </p>
-    </div>
-  </div>
-</template>
 
+      <div v-if="role === 'host'" class="mt-6 p-4 bg-white shadow rounded">
+        <h2 class="text-lg font-bold mb-4">Create Host Room</h2>
+        <div class="space-y-2">
+          <input
+            type="text"
+            v-model="username"
+            placeholder="Enter your name"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+          <button
+            v-if="!isLoading"
+            class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+            @click="createHostRoom"
+          >
+            Generate Room Number
+          </button>
+        </div>
+        <p v-if="isLoading">Loading...</p>
+        <p v-if="errorMessage" class="mt-4 text-red-500">
+          {{ errorMessage }}
+        </p>
+      </div>
+      <div v-if="role === 'guest'" class="mt-6 p-4 bg-white shadow rounded">
+        <h2 class="text-lg font-bold mb-4">Enter Room number</h2>
+        <div class="space-y-2">
+          <input
+            type="text"
+            v-model="username"
+            placeholder="Enter your name"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+          <input
+            type="number"
+            v-model="roomNumber"
+            placeholder="Enter room number"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+          <button
+            v-if="!isLoading"
+            class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+            @click="joinRoom"
+          >
+            Join Room
+          </button>
+        </div>
+        <p v-if="isLoading">Loading...</p>
+        <p v-if="errorMessage" class="mt-4 text-red-500">
+          {{ errorMessage }}
+        </p>
+      </div>
+    </div>
+  </template>
 
   <template v-if="currentPage == 1">
     <div class="absolute top-0 left-0 w-full flex items-center justify-between bg-gray-800 text-white p-4 z-50">
@@ -151,32 +151,33 @@
       </div>
   </template>
 
-  <template v-if="currentPage == 2">
-      <div class="result">
-          <div>
-              <small v-if="currentUsername">現在の合計<mark>{{currentTotalPoints}}</mark>点</small>
-              <hr>
-              <small style="font-weight: unset; display: block; text-align: right;">
-                  スピードボーナス<mark>+{{bonusPoints}}</mark>点<br>
-                  かんりょうボーナス<mark>+2</mark>点
-              </small>
-              <hr>
-              <button @click="startGame">リスタート</button>
-          </div>
+  <template v-if="currentPage == 999">
+    <div class="grid grid-cols-5 gap-[20px] p-5">
+      <template v-for="(tempTile,index) in tempTiles" :key="index">
+        <div class="tempTile" v-if="index >= (pagination - 1) * 500 && index < pagination * 500" @click="getDetail(tempTile)">
+          <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.poster_path" :alt="tempTile.original_title" />
+          <hr>
+          <span class="movie-title" v-if="tempTile.original_title"><small>{{index+1}} ({{ tempTile.release_date.slice(0, 4) }}) </small>{{ tempTile.original_title }}</span>
+        </div>
+      </template>
+      <div class="button-container">
+        <button @click="pagination--">-</button>
+        <strong>{{pagination}}</strong>
+        <button @click="pagination++">+</button>
       </div>
+    </div>
   </template>
+
 </template>
 
 <script>
-import { movie_data } from '../public/const/movieData';
 import { moviesInternational } from '../public/const/moviesInternational';
 import { moviesJapan } from '../public/const/moviesJapan';
 export default {
   data() {
   return {
-        movie_data,
-        moviesInternational,
-        moviesJapan,
+      moviesInternational,
+      moviesJapan,
       currentPage: 0,
       tiles: null,
       startX: 0,
@@ -273,30 +274,33 @@ export default {
           }
       ],
 
-        uniqueId: null,
-        currentUserRow: null,
-        currentUsername: null,
+      uniqueId: null,
+      currentUserRow: null,
+      currentUsername: null,
 
-        currentTotalPoints: null,
+      currentTotalPoints: null,
 
-        computedHref: null,
-        
-        hasPointsReached: null,
+      computedHref: null,
+      
+      hasPointsReached: null,
 
-        developingMode: true,
-        role: null,
-        username: "",
-        roomNumber: null,
-        errorMessage: "",
-        baseUrl: "https://script.google.com/macros/s/AKfycbx9uUjKDxpopuCig5ukgaV36EKgZU2yYW6VuNY3QJNMT0S0Y72VLuYbrNTXuizOcAVprQ/exec",
-        isLoading: false,
-        existingRoomNumbers: [], 
+      developingMode: true,
+      role: null,
+      username: "",
+      roomNumber: null,
+      errorMessage: "",
+      baseUrl: "https://script.google.com/macros/s/AKfycbyptpLzoQOvo8VhxYt9c1Z12HKUn2hxdce99oDwtquZvaKq-F5SSQzVuXpiaOA70uKhmQ/exec",
+      isLoading: false,
+      existingRoomNumbers: [], 
 
-        maxMovieCount: 25,
-        hostMoviesList: [],
+      maxMovieCount: 25,
+      hostMoviesList: [],
 
-        hostName: null,
-        guestMovieList: [],
+      hostName: null,
+      guestMovieList: [],
+
+      tempTiles: [],
+      pagination: 1,
   };
 },
 watch: {
@@ -320,7 +324,7 @@ methods: {
     // await this.incrementSorting()
     this.hasGameFinished = false;
     // this.currentPage = 1
-    this.tiles = this.generateRandomTiles(15)
+    this.tiles = this.generateRandomTiles()
     this.currentTileIndex = 0
   },
   generateRandomTiles() {
@@ -391,7 +395,6 @@ methods: {
         if(this.moveX > minMove){
             if(this.role == 'host') this.addMovie()
             if(this.role == 'guest') this.compareList()
-            console.log(this.flyAwayTile)
             document.body.style.backgroundColor = 'forestGreen';  // Change background color to forest green
             document.body.style.backgroundImage = 'none'; // Remove gradient image
             if(this.flyAwayTile) this.flyAwayTile.isPicked = true;
@@ -402,27 +405,17 @@ methods: {
         }
 
                 
-                this.isSwiped = true;
-                setTimeout(() => {
-                this.currentTileIndex++;
-                this.flyAwayTile = null;
-                this.isSwiped = false;
-                    
-                }, 400);
+        this.isSwiped = true;
+        setTimeout(() => {
+        this.currentTileIndex++;
+        this.flyAwayTile = null;
+        this.isSwiped = false;
+            
+        }, 400);
 
-                if (this.currentTileIndex == this.tiles.length-1 && !this.hasGameFinished) {
-                this.hasGameFinished = true
-                    document.body.style.backgroundColor = 'yellow';
-                    clearInterval(this.timerInterval);
-                    this.bonusPoints = Math.floor(this.timer);
-
-                
-                    this.currentPage =2
-                }
-
-                setTimeout(() => {
-            document.body.style.backgroundColor = 'transparent';  // Reset the background color to the default (transparent or inherited)
-            document.body.style.backgroundImage = 'rgb(20, 30, 48)';  // Apply the gradient
+        setTimeout(() => {
+          document.body.style.backgroundColor = 'transparent';  // Reset the background color to the default (transparent or inherited)
+          document.body.style.backgroundImage = 'rgb(20, 30, 48)';  // Apply the gradient
         }, 300);  // Transition will occur smoothly
       }
 
@@ -539,7 +532,7 @@ methods: {
   },
   addMovie(){
     this.hostMoviesList.push(this.flyAwayTile.id)
-    if (this.hostMoviesList.length % 5 === 0 || this.hostMoviesList.length === this.maxMovieCount) {
+    if (this.hostMoviesList.length % 3 === 0 || this.hostMoviesList.length === this.maxMovieCount) {
         this.sendMoviesToSpreadsheet();
     }
   },
@@ -660,7 +653,30 @@ methods: {
         }
     }
 
+    if(this.guestMovieList.length % 3 === 0 || matchingId) this.sendGuestMovies();
 
+  },
+
+  async sendGuestMovies() {
+    try {
+        const moviesJSON = JSON.stringify(this.guestMovieList);
+
+        // Make a request to the Google Apps Script to update the spreadsheet
+        const response = await fetch(
+            `${this.baseUrl}?action=updateGuestMovies&roomNumber=${this.roomNumber}&movies=${encodeURIComponent(moviesJSON)}`
+        );
+        
+        
+
+        const result = await response.json();
+        if (result.success) {
+            console.log("Movies successfully sent to the spreadsheet!");
+        } else {
+            console.error("Failed to send movies to the spreadsheet:", result.message);
+        }
+    } catch (error) {
+        console.error("An error occurred while sending movies to the spreadsheet:", error);
+    }
   },
 
   getSharedLink() {
@@ -695,7 +711,11 @@ methods: {
       } else {
           console.log("No room number found in the URL.");
       }
-  }
+  },
+
+  getDetail(tile){
+    alert(tile.overview)
+  },
 
 
 
@@ -707,21 +727,13 @@ methods: {
   async mounted() {
     console.clear()
     
-    // console.log(this.movie_data)
-    // this.getParams();
-    // if(this.uniqueId) await this.findMe()
-    // this.currentPage = 1
     this.loadRoomNumbers();
-    this.checkLink()
-    if(this.developingMode){
-      // this.role = 'guest';
-      // this.role = 'host';
-      // this.roomNumber = 76113;
-      // this.username = 'sunshine';
-      // this.currentPage = 1;
-    }
+    this.checkLink();
+    this.startGame();
 
-    this.startGame()
+    // this.currentPage = 999;
+    // this.tempTiles = [...this.moviesJapan, ...this.moviesInternational];
+    // this.pagination = 4;
   },
 };
 </script>
@@ -731,7 +743,7 @@ methods: {
       max-width: unset !important;
   }
   body, html {
-      margin: 0;
+      /* margin: 0;
       padding: 0;
       height: 100%;
       transition: all .25s ease-in-out;
@@ -739,15 +751,15 @@ methods: {
       overflow: hidden !important;
       
       font-size: unset;
-      background: rgb(20, 30, 48);
+      background: rgb(20, 30, 48); */
   }
 
   #app {
-      display: flex;
+      /* display: flex;
       justify-content: center;
       align-items: center;
       height: 100dvh;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease; */
   }
 
   button{
@@ -812,7 +824,7 @@ methods: {
     margin-bottom: 10px;
 }
 
-.tile .movie-title {
+.movie-title {
     text-align: left;
     font-size: 1.5rem;
     display: -webkit-box;
