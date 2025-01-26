@@ -176,7 +176,7 @@
 
     <template v-if="currentPage == 10">
       <div v-if="matchedIds.length > 0" class="text-white">
-        <h3>{{ hostName }} and {{ guestName }}'s matched {{ this.matchedIds.length }} movies</h3>
+        <h3 class="text-white">{{ hostName }} and {{ guestName }}'s matched {{ this.matchedIds.length }} movies</h3>
         <div class="grid grid-cols-2 gap-[20px] p-3 text-white">
           <template v-for="(tempTile,index) in matchedTiles" :key="index">
             <div class="tempTile" >
@@ -188,8 +188,7 @@
         </div>
       </div>
       <div v-else>
-        <h3>{{ hostName }} and {{ guestName }}'s dont have matched movie...</h3>
-        {{ matchedIds }}
+        <h3 class="text-white">{{ hostName }} and {{ guestName }}'s dont have matched movie...</h3>
       </div>
       <hr>
       <div class="grid grid-cols-2 gap-[20px] p-3 text-white">
@@ -812,6 +811,8 @@ methods: {
     const room = this.existingRoomNumbers.find(
         (room) => room.roomId === this.roomNumber
     );
+    console.log(this.existingRoomNumbers)
+    console.log(room)
 
     if (!room) {
         this.errorMessage = "Room does not exist. Please check the room number.";
@@ -824,7 +825,7 @@ methods: {
     this.hostName = room.hostName
     this.hostMoviesList = room.hostMoviesList ? JSON.parse(room.hostMoviesList) : []; 
 
-    this.guestName = room.guestName || null;
+    this.guestName = room.guestName || 'nouser';
     this.guestMoviesList = room.guestMoviesList ? JSON.parse(room.guestMoviesList) : []; 
     
 
@@ -842,8 +843,8 @@ methods: {
 
 
     
-    document.body.style.overflow = 'auto !important';
     document.body.style.padding = '1em';
+    document.body.style.overflow = 'auto';
     
     
     document.getElementById('app-container').style.display = 'block';
@@ -852,7 +853,7 @@ methods: {
   },
 
   backToSelecting(){
-    document.body.style.overflow = 'hidden !important';
+    document.body.style.overflow = 'hidden';
     document.body.style.padding = '0';
     document.getElementById('app-container').style.display = 'flex';
 
@@ -875,9 +876,9 @@ methods: {
     this.checkLink();
     this.startGame();
 
-    this.role = 'viewer'
-    // this.role = 'guest'
-    this.roomNumber = Number(45102)
+    // this.role = 'viewer'
+    // // this.role = 'guest'
+    // this.roomNumber = Number(45102)
     // this.roomNumber = '76113'
 
     // this.currentPage = 999;
@@ -897,7 +898,7 @@ methods: {
       height: 100%;
       transition: all .25s ease-in-out;
 
-      overflow: hidden !important;
+      overflow: hidden;
       
       font-size: unset;
       background: rgb(20, 30, 48);
