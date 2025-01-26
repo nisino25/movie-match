@@ -743,7 +743,7 @@ methods: {
       max-width: unset !important;
   }
   body, html {
-      /* margin: 0;
+      margin: 0;
       padding: 0;
       height: 100%;
       transition: all .25s ease-in-out;
@@ -751,15 +751,15 @@ methods: {
       overflow: hidden !important;
       
       font-size: unset;
-      background: rgb(20, 30, 48); */
+      background: rgb(20, 30, 48);
   }
 
   #app {
-      /* display: flex;
+      display: flex;
       justify-content: center;
       align-items: center;
       height: 100dvh;
-      transition: background-color 0.3s ease; */
+      transition: background-color 0.3s ease;
   }
 
   button{
