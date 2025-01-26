@@ -809,13 +809,13 @@ methods: {
 
     // Check if the room exists and is not occupied
     const room = this.existingRoomNumbers.find(
-        (room) => room.roomId === this.roomNumber
+        (room) => room.roomId == this.roomNumber
     );
     console.log(this.existingRoomNumbers)
     console.log(room)
 
     if (!room) {
-        this.errorMessage = "Room does not exist. Please check the room number.";
+        this.errorMessage = "Room does not exist. Please check the room number!";
         this.isLoading = false;
         return;
     }
