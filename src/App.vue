@@ -1,172 +1,236 @@
 <template>
+  <div id="app-container">
 
-  <template v-if="currentPage == 0">
-    <div class="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 class="text-2xl font-bold mb-6">Choose Your Role</h1>
-      <div class="flex flex-col space-y-4">
-        <button
-          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-          @click="selectRole('host')"
-        >
-          Be a Host
-        </button>
-        <button
-          class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 text-xl"
-          @click="selectRole('guest')"
-        >
-          Be a Guest
-        </button>
-        <button
-          class="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 text-xl"
-          @click="selectRole('viewer')"
-        >
-          Be a Viewer
-        </button>
-      </div>
-
-      <div v-if="role === 'host'" class="mt-6 p-4 bg-white shadow rounded">
-        <h2 class="text-lg font-bold mb-4">Create Host Room</h2>
-        <div class="space-y-2">
-          <input
-            type="text"
-            v-model="username"
-            placeholder="Enter your name"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
+    <template v-if="currentPage == 0">
+      <div class="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <h1 class="text-2xl font-bold mb-6">Choose Your Role</h1>
+        <div class="flex flex-col space-y-4">
           <button
-            v-if="!isLoading"
             class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-            @click="createHostRoom"
+            @click="selectRole('host')"
           >
-            Generate Room Number
+            Be a Host
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 text-xl"
+            @click="selectRole('guest')"
+          >
+            Be a Guest
+          </button>
+          <button
+            class="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 text-xl"
+            @click="selectRole('viewer')"
+          >
+            Be a Viewer
           </button>
         </div>
-        <p v-if="isLoading">Loading...</p>
-        <p v-if="errorMessage" class="mt-4 text-red-500">
-          {{ errorMessage }}
-        </p>
-      </div>
-      <div v-if="role === 'guest'" class="mt-6 p-4 bg-white shadow rounded">
-        <h2 class="text-lg font-bold mb-4">Enter Room number</h2>
-        <div class="space-y-2">
-          <input
-            type="text"
-            v-model="username"
-            placeholder="Enter your name"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            v-model="roomNumber"
-            placeholder="Enter room number"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          <button
-            v-if="!isLoading"
-            class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
-            @click="joinRoom"
-          >
-            Join Room
-          </button>
-        </div>
-        <p v-if="isLoading">Loading...</p>
-        <p v-if="errorMessage" class="mt-4 text-red-500">
-          {{ errorMessage }}
-        </p>
-      </div>
-    </div>
-  </template>
 
-  <template v-if="currentPage == 1">
-    <div class="absolute top-0 left-0 w-full flex items-center justify-between bg-gray-800 text-white p-4 z-50">
-      <!-- Profile Section -->
-      <div class="flex items-center">
-        <div class="w-10 h-10 bg-gray-500 rounded-full flex-shrink-0"></div>
-        <span class="ml-2 text-lg font-semibold">{{username}}</span>
-      </div>
-
-      <!-- Picked Movies Section -->
-      <div class="text-center" v-if="role == 'host'" >
-        <span class="text-lg font-semibold">
-          <span class="text-green-400">{{hostMoviesList.length}}</span> / <span>{{ maxMovieCount }}</span>
-        </span>
-      </div>
-
-      <!-- Picked Movies Section -->
-      <div class="text-center" v-if="role == 'guest'">
-        <span class="text-lg font-semibold">
-          <span class="text-green-400">{{guestMovieList.length}}</span> / <span>{{ hostMoviesList.length }} from Host</span>
-        </span>
-      </div>
-
-      <!-- Room Number Section -->
-      <div class="flex items-center text-center">
-        <span class="text-lg font-semibold bg-blue-500 px-3 py-1 rounded" @click="getSharedLink()">
-          #{{ roomNumber || "00000" }}
-          <small v-if="hostName"><br>{{ hostName }}</small>
-        </span>
-      </div>
-    </div>
-
-      <div class="tile-container">
-        <template v-for="(tile, index) in tiles" :key="tile.id">
-            <div 
-                v-if="index < currentTileIndex + 10"
-                :class="['tile', { 'swiped': isSwiped }]"
-                :style="{
-                    width: tile.id === this.flyAwayTile ? '0px' : '',
-                    height: tile.id === this.flyAwayTile ? '0px' : '',
-                    transform: getTransform(tile, index),
-                    zIndex: tiles.length - index,
-                    transition: index === currentTileIndex && tile.id !== this.flyAwayTile && isSwiping ? 'unset' : '.4s ease-in-out',
-                    display: index < currentTileIndex ? 'none' : ''
-                }"
-                @mousedown="startSwipe"
-                @mousemove="moveSwipe"
-                @mouseup="endSwipe"
-                @mouseleave="endSwipe"
-                @touchstart="startSwipe"
-                @touchmove="moveSwipe"
-                @touchend="endSwipe"
+        <div v-if="role === 'host'" class="mt-6 p-4 bg-white shadow rounded">
+          <h2 class="text-lg font-bold mb-4">Create Host Room</h2>
+          <div class="space-y-2">
+            <input
+              type="text"
+              v-model="username"
+              placeholder="Enter your name"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            <button
+              v-if="!isLoading"
+              class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+              @click="createHostRoom"
             >
-                <div class="img-container">
-                    <img :src="'https://image.tmdb.org/t/p/w500' + tile.poster_path" :alt="tile.original_title" />
-                </div>
-                <div>
-                    <!-- Display genres as badges -->
-                    <div class="mt-1">
-                        <span
-                            v-for="(genreId, genreIndex) in tile.genre_ids"
-                            :key="genreIndex"
-                            class="bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-medium inline mr-2">
-                            {{ findGenreById(genreId).name }}
-                        </span>
-                    </div>
-    
-                    <span class="movie-title" v-if="tile.original_title"><small>{{index+1}} ({{ tile.release_date.slice(0, 4) }}) </small>{{ tile.original_title }}</span>
-                </div>
-            </div>
-        </template>
-
-      </div>
-  </template>
-
-  <template v-if="currentPage == 999">
-    <div class="grid grid-cols-5 gap-[20px] p-5">
-      <template v-for="(tempTile,index) in tempTiles" :key="index">
-        <div class="tempTile" v-if="index >= (pagination - 1) * 500 && index < pagination * 500" @click="getDetail(tempTile)">
-          <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.poster_path" :alt="tempTile.original_title" />
-          <hr>
-          <span class="movie-title" v-if="tempTile.original_title"><small>{{index+1}} ({{ tempTile.release_date.slice(0, 4) }}) </small>{{ tempTile.original_title }}</span>
+              Generate Room Number
+            </button>
+          </div>
+          <p v-if="isLoading">Loading...</p>
+          <p v-if="errorMessage" class="mt-4 text-red-500">
+            {{ errorMessage }}
+          </p>
         </div>
-      </template>
-      <div class="button-container">
-        <button @click="pagination--">-</button>
-        <strong>{{pagination}}</strong>
-        <button @click="pagination++">+</button>
+        <div v-if="role === 'guest' && existingRoomNumbers.length > 0" class="mt-6 p-4 bg-white shadow rounded">
+          <h2 class="text-lg font-bold mb-4">Enter Room number</h2>
+          <div class="space-y-2">
+            <input
+              type="text"
+              v-model="username"
+              placeholder="Enter your name"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            <input
+              type="number"
+              v-model="roomNumber"
+              placeholder="Enter room number"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            <button
+              v-if="!isLoading"
+              class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+              @click="joinRoom"
+            >
+              Join Room
+            </button>
+          </div>
+          <p v-if="isLoading">Loading...</p>
+          <p v-if="errorMessage" class="mt-4 text-red-500">
+            {{ errorMessage }}
+          </p>
+        </div>
+        <div v-if="role === 'viewer' && existingRoomNumbers.length > 0" class="mt-6 p-4 bg-white shadow rounded">
+          <h2 class="text-lg font-bold mb-4">Check Room</h2>
+          <div class="space-y-2">
+            <input
+              type="text"
+              v-model="roomNumber"
+              placeholder="Enter room number"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            <button
+              v-if="!isLoading"
+              class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 text-xl"
+              @click="checkRoom"
+            >
+              Check Room
+            </button>
+          </div>
+          <p v-if="isLoading">Loading...</p>
+          <p v-if="errorMessage" class="mt-4 text-red-500">
+            {{ errorMessage }}
+          </p>
+        </div>
       </div>
-    </div>
-  </template>
+    </template>
+
+    <template v-if="currentPage == 1">
+      <div class="absolute top-0 left-0 w-full flex items-center justify-between bg-gray-800 text-white p-4 z-50">
+        <!-- Profile Section -->
+        <div class="flex items-center">
+          <div class="w-10 h-10 bg-gray-500 rounded-full flex-shrink-0"></div>
+          <span class="ml-2 text-lg font-semibold">{{username}}</span>
+        </div>
+
+        <!-- Picked Movies Section -->
+        <div class="text-center" v-if="role == 'host'" >
+          <span class="text-lg font-semibold">
+            <span class="text-green-400">{{hostMoviesList.length}}</span> / <span>{{ maxMovieCount }}</span>
+          </span>
+        </div>
+
+        <!-- Picked Movies Section -->
+        <div class="text-center" v-if="role == 'guest'">
+          <span class="text-lg font-semibold">
+            <span class="text-green-400">{{guestMoviesList.length}}</span> / <span>{{ hostMoviesList.length }} from Host</span>
+          </span>
+        </div>
+
+        <!-- Room Number Section -->
+        <div class="flex items-center text-center">
+          <span class="text-lg font-semibold bg-blue-500 px-3 py-1 rounded" @click="getSharedLink()">
+            #{{ roomNumber || "00000" }}
+            <small v-if="hostName"><br>{{ hostName }}</small>
+          </span>
+        </div>
+      </div>
+
+        <div class="tile-container">
+          <template v-for="(tile, index) in tiles" :key="tile.id">
+              <div 
+                  v-if="index < currentTileIndex + 10"
+                  :class="['tile', { 'swiped': isSwiped }]"
+                  :style="{
+                      width: tile.id === this.flyAwayTile ? '0px' : '',
+                      height: tile.id === this.flyAwayTile ? '0px' : '',
+                      transform: getTransform(tile, index),
+                      zIndex: tiles.length - index,
+                      transition: index === currentTileIndex && tile.id !== this.flyAwayTile && isSwiping ? 'unset' : '.4s ease-in-out',
+                      display: index < currentTileIndex ? 'none' : ''
+                  }"
+                  @mousedown="startSwipe"
+                  @mousemove="moveSwipe"
+                  @mouseup="endSwipe"
+                  @mouseleave="endSwipe"
+                  @touchstart="startSwipe"
+                  @touchmove="moveSwipe"
+                  @touchend="endSwipe"
+              >
+                  <div class="img-container">
+                      <img :src="'https://image.tmdb.org/t/p/w500' + tile.poster_path" :alt="tile.original_title" />
+                  </div>
+                  <div>
+                      <!-- Display genres as badges -->
+                      <div class="mt-1 overflow-hidden text-xs">
+                          <span
+                              v-for="(genreId, genreIndex) in tile.genre_ids"
+                              :key="genreIndex"
+                              class="bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-medium inline mr-2">
+                              {{ findGenreById(genreId).name }}
+                          </span>
+                      </div>
+      
+                      <span class="movie-title" v-if="tile.original_title" @click="getDetail(tile)"><small>{{index+1}} ({{ tile.release_date.slice(0, 4) }}) </small>{{ tile.original_title }}</span>
+                  </div>
+              </div>
+          </template>
+
+        </div>
+    </template>
+
+    <template v-if="currentPage == 10">
+      <div v-if="matchedIds.length > 0" class="text-white">
+        <h3>{{ hostName }} and {{ guestName }}'s matched {{ this.matchedIds.length }} movies</h3>
+        <div class="grid grid-cols-2 gap-[20px] p-3 text-white">
+          <template v-for="(tempTile,index) in matchedTiles" :key="index">
+            <div class="tempTile" >
+              <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.poster_path" :alt="tempTile.original_title" />
+              <hr>
+              <span class="text-white text-sm" v-if="tempTile.original_title" @click="getDetail(tempTile)"><small>{{ tempTile.release_date.slice(0, 4) }}. </small>{{ tempTile.original_title }}</span>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div v-else>
+        <h3>{{ hostName }} and {{ guestName }}'s dont have matched movie...</h3>
+        {{ matchedIds }}
+      </div>
+      <hr>
+      <div class="grid grid-cols-2 gap-[20px] p-3 text-white">
+        <div>
+          <template v-for="(tempTile,index) in hostMoviesTiles" :key="index">
+            <div class="tempTile mb-5">
+              <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.backdrop_path" :alt="tempTile.original_title" />
+              <span class="text-white text-xs" v-if="tempTile.original_title" @click="getDetail(tempTile)"><small>{{ index+1 }}. </small>{{ tempTile.original_title }}</span>
+            </div>
+          </template>
+        </div>
+        <div>
+          <template v-for="(tempTile,index) in guestMoviesList" :key="index">
+            <div class="tempTile mb-5">
+              <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.backdrop_path" :alt="tempTile.original_title" />
+              <span class="text-white text-xs" v-if="tempTile.original_title" @click="getDetail(tempTile)"><small>{{ index+1 }}. </small>{{ tempTile.original_title }}</span>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <button class="mt-5" @click="backToSelecting()">Back</button>
+    </template>
+
+    <template v-if="currentPage == 999">
+      <div class="grid grid-cols-2 gap-[25px] p-5">
+        <template v-for="(tempTile,index) in tempTiles" :key="index">
+          <div class="tempTile" v-if="index >= (pagination - 1) * 500 && index < pagination * 500" @click="getDetail(tempTile)">
+            <img :src="'https://image.tmdb.org/t/p/w500' + tempTile.poster_path" :alt="tempTile.original_title" />
+            <hr>
+            <span class="movie-title" v-if="tempTile.original_title"><small>{{index+1}} ({{ tempTile.release_date.slice(0, 4) }}) </small>{{ tempTile.original_title }}</span>
+          </div>
+        </template>
+        <div class="button-container">
+          <button @click="pagination--">-</button>
+          <strong>{{pagination}}</strong>
+          <button @click="pagination++">+</button>
+        </div>
+      </div>
+    </template>
+  </div>
 
 </template>
 
@@ -289,7 +353,7 @@ export default {
       username: "",
       roomNumber: null,
       errorMessage: "",
-      baseUrl: "https://script.google.com/macros/s/AKfycbyptpLzoQOvo8VhxYt9c1Z12HKUn2hxdce99oDwtquZvaKq-F5SSQzVuXpiaOA70uKhmQ/exec",
+      baseUrl: "https://script.google.com/macros/s/AKfycbwDnmUz6jgLDWZ5ZQFhUBOrW-iQM6w8MvA51CBeO2cCWxat-lIhcjWgXmfnm4_O1jPAvg/exec",
       isLoading: false,
       existingRoomNumbers: [], 
 
@@ -297,10 +361,16 @@ export default {
       hostMoviesList: [],
 
       hostName: null,
-      guestMovieList: [],
+      guestMoviesList: [],
 
       tempTiles: [],
       pagination: 1,
+
+      guestName: null,
+      matchedIds: [],
+      matchedTiles: [],
+      hostMoviesTiles: [],
+      guestMoviesTiles: [],
   };
 },
 watch: {
@@ -337,8 +407,6 @@ methods: {
 
       // Generate random tiles
       const tiles = this.shuffleArray(combinedArr);
-
-      console.log(tiles);
 
       return tiles;
   },
@@ -457,8 +525,6 @@ methods: {
       if (result.success && Array.isArray(result.rooms)) {
         
         this.existingRoomNumbers = result.rooms;
-        console.log('got the room data')
-        console.log(this.existingRoomNumbers)
       } else {
         this.errorMessage = "Failed to load room numbers.";
       }
@@ -629,11 +695,11 @@ methods: {
       }
   },
   compareList(){
-    this.guestMovieList.push(this.flyAwayTile.id)
+    this.guestMoviesList.push(this.flyAwayTile.id)
 
-    // Check for matches between guestMovieList and hostMoviesList
-    const matchingId = this.hostMoviesList.find((id) => this.guestMovieList.includes(id));
-    // const matchingId = this.guestMovieList[0]
+    // Check for matches between guestMoviesList and hostMoviesList
+    const matchingId = this.hostMoviesList.find((id) => this.guestMoviesList.includes(id));
+    // const matchingId = this.guestMoviesList[0]
 
     if (matchingId) {
         // Remove the matching ID from hostMoviesList
@@ -653,13 +719,13 @@ methods: {
         }
     }
 
-    if(this.guestMovieList.length % 3 === 0 || matchingId) this.sendGuestMovies();
+    if(this.guestMoviesList.length % 3 === 0 || matchingId) this.sendGuestMovies();
 
   },
 
   async sendGuestMovies() {
     try {
-        const moviesJSON = JSON.stringify(this.guestMovieList);
+        const moviesJSON = JSON.stringify(this.guestMoviesList);
 
         // Make a request to the Google Apps Script to update the spreadsheet
         const response = await fetch(
@@ -714,7 +780,85 @@ methods: {
   },
 
   getDetail(tile){
-    alert(tile.overview)
+    let description = `
+      ${tile.release_date}. ${tile.original_title} \n
+      Category: ${this.displayGenres(tile)}\n
+      ${tile.overview}
+    `
+    alert(description)
+  },
+  displayGenres(tile) {
+    // Map genre_ids to their names
+    const genreNames = tile.genre_ids
+      .map((genreId) => this.findGenreById(genreId).name)
+      .join(", ");
+
+    console.log("Genres:", genreNames); // Log genres
+    return genreNames; // Return for display
+  },
+
+  async checkRoom() {
+    console.log('checking room');
+
+    if (!this.roomNumber) {
+        this.errorMessage = "Please enter a roomnumber!";
+        return;
+    }
+
+    this.isLoading = true
+    this.errorMessage = "";
+
+    // Check if the room exists and is not occupied
+    const room = this.existingRoomNumbers.find(
+        (room) => room.roomId === this.roomNumber
+    );
+
+    if (!room) {
+        this.errorMessage = "Room does not exist. Please check the room number.";
+        this.isLoading = false;
+        return;
+    }
+
+
+    this.currentPage = 10; // Navigate to the next page
+    this.hostName = room.hostName
+    this.hostMoviesList = room.hostMoviesList ? JSON.parse(room.hostMoviesList) : []; 
+
+    this.guestName = room.guestName || null;
+    this.guestMoviesList = room.guestMoviesList ? JSON.parse(room.guestMoviesList) : []; 
+    
+
+    this.matchedIds = Array.from(
+      new Set(this.hostMoviesList.filter((hostMovieId) => 
+        this.guestMoviesList.includes(hostMovieId)
+      ))
+    );
+
+    
+
+    this.matchedTiles = this.tiles.filter(tile => this.matchedIds.includes(tile.id));
+    this.hostMoviesTiles = this.tiles.filter(tile => this.hostMoviesList.includes(tile.id));
+    this.guestMoviesList = this.tiles.filter(tile => this.guestMoviesList.includes(tile.id));
+
+
+    
+    document.body.style.overflow = 'auto !important';
+    document.body.style.padding = '1em';
+    
+    
+    document.getElementById('app-container').style.display = 'block';
+
+    this.isLoading = false;
+  },
+
+  backToSelecting(){
+    document.body.style.overflow = 'hidden !important';
+    document.body.style.padding = '0';
+    document.getElementById('app-container').style.display = 'flex';
+
+    this.role = null;
+    this.currentPage = 0;
+    this.roomNumber = null
   },
 
 
@@ -730,6 +874,11 @@ methods: {
     this.loadRoomNumbers();
     this.checkLink();
     this.startGame();
+
+    this.role = 'viewer'
+    // this.role = 'guest'
+    this.roomNumber = Number(45102)
+    // this.roomNumber = '76113'
 
     // this.currentPage = 999;
     // this.tempTiles = [...this.moviesJapan, ...this.moviesInternational];
@@ -754,7 +903,11 @@ methods: {
       background: rgb(20, 30, 48);
   }
 
-  #app {
+  #app{
+    margin-top: unset !important;
+  }
+
+  #app-container {
       display: flex;
       justify-content: center;
       align-items: center;
